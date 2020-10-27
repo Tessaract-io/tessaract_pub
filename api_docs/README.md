@@ -15,7 +15,6 @@ The requests and responses use the JSON format and follow the JSON-RPC spec:
 ### 1. User login
 
 Sample request:
-
 ```json
 {
     "id": 1603770625657,
@@ -31,7 +30,6 @@ Sample request:
 ```
 
 Sample response:
-
 ```json
 {
     "error": null,
@@ -50,6 +48,7 @@ Sample response:
 }
 ```
 
+Sample script:
 ```console
 curl --header "Content-Type: application/json" \
   --request POST \
@@ -73,7 +72,6 @@ The login function is using /json_rpc_pub and not /json_rpc because of firewall 
 ## 2. Get client list
 
 Sample request:
-
 ```json
 {
   "id": 1603770625657,
@@ -96,7 +94,6 @@ Sample request:
 ```
 
 Sample response:
-
 ```json
 {
     "error": null,
@@ -119,7 +116,6 @@ Sample response:
 ```
 
 Sample script:
-
 ```console
 curl --header "Content-Type: application/json" \
   --request POST \
@@ -207,7 +203,7 @@ Sample Response:
 ```
 
 Sample Script:
-```json
+```console
 curl --header "Content-Type: application/json" \
   --request POST \
   --data '{
