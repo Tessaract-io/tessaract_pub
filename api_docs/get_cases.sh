@@ -6,16 +6,16 @@ curl --header "Content-Type: application/json" \
       "method": "execute",
       "params": [
           "aln.job",
-          "search_read",
+          "search_read_path",
           [
-            [["client_id","=","197255"]],
-            ["number","date","facts"]
+            [["client_id","=","197258"]],
+            ["number","date","client_id.full_name","job_type_id.name","facts"]
           ],
           {},
           {
-            "user_id": 15912,
+            "user_id": 15914,
             "company_id": 114,
-            "token": "dGVzc19zdGFnaW5nIDE1OTEy|1603772113|925796284137cbde797c2afc9b7013e0ded113f5"
+            "token": "dGVzc19zdGFnaW5nIDE1OTE0|1603776858|c2f5cc3b8697845fa8cebd4949f46d8e8ce9aab6"
           }
       ]
   }' \

@@ -7,7 +7,7 @@ curl --header "Content-Type: application/json" \
       "params": [
           "login",
           "login",
-          ["test_login","test_password"],
+          ["test.user@tessaract.io","test.password"],
           {},
           {}
       ]
