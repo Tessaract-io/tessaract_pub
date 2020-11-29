@@ -48,7 +48,7 @@ Sample response:
 }
 ```
 
-Sample script:
+Sample script (CURL):
 ```console
 curl --header "Content-Type: application/json" \
   --request POST \
@@ -64,6 +64,56 @@ curl --header "Content-Type: application/json" \
       ]
   }' \
   https://staging-backend.tessaract.io/json_rpc_pub
+```
+
+Sample program (.NET):
+```console
+using System;
+using System.IO;
+using System.Net;
+using System.Text;
+using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
+namespace dotnet
+{
+    class Program
+    {
+        static dynamic rpc_execute(string model, string method, object[] args, Dictionary<string,object> opts) {
+            string url="https://staging-backend.tessaract.io/json_rpc_pub";
+            var req=(HttpWebRequest)WebRequest.Create(url);
+            req.ContentType="application/json";
+            req.Method="POST";
+            object[] parms={model,method,args,opts};
+            var req_data=new Dictionary<string,object>();
+            req_data["id"]=DateTimeOffset.Now.ToUnixTimeSeconds();
+            req_data["method"]="execute";
+            req_data["params"]=parms;
+            string payload=JsonSerializer.Serialize(req_data);
+            var payload_bytes=Encoding.ASCII.GetBytes(payload);
+            var stream=req.GetRequestStream();
+            stream.Write(payload_bytes,0,payload_bytes.Length);
+            var resp=(HttpWebResponse)req.GetResponse();
+            var reader=new StreamReader(resp.GetResponseStream());
+            string result=reader.ReadToEnd();
+            var resp_data=JsonSerializer.Deserialize<Dictionary<string,object>>(result);
+            var error=resp_data["error"];
+            if (error!=null) {
+                throw new Exception("Error: "+error);
+            }
+            return resp_data["result"];
+        }
+
+        static void Main()
+        {
+            string[] args={"test.user@tessaract.io","test.password"};
+            var opts=new Dictionary<string,object>();
+            dynamic resp=rpc_execute("login","login",args,opts);
+            Console.WriteLine(resp);
+        }
+    }
+}
 ```
 
 Note:
@@ -138,6 +188,66 @@ curl --header "Content-Type: application/json" \
       ]
   }' \
   https://staging-backend.tessaract.io/json_rpc
+```
+
+Sample program (.NET):
+```console
+using System;
+using System.IO;
+using System.Net;
+using System.Text;
+using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
+namespace dotnet
+{
+    class Program
+    {
+        static string rpc_url="https://staging-backend.tessaract.io/json_rpc";
+        static string user_id="15914";
+        static string company_id="114";
+        static string token="dGVzc19zdGFnaW5nIDE1OTE0|1606649697|14025346adda420c834086ff09d4c27724d1f5b5";
+
+        static dynamic rpc_execute(string model, string method, object[] args, Dictionary<string,object> opts) {
+            var req=(HttpWebRequest)WebRequest.Create(rpc_url);
+            req.ContentType="application/json";
+            req.Method="POST";
+            var cookies=new Dictionary<string,object>();
+            cookies["user_id"]=user_id;
+            cookies["company_id"]=company_id;
+            cookies["token"]=token;
+            object[] parms={model,method,args,opts,cookies};
+            var req_data=new Dictionary<string,object>();
+            req_data["id"]=DateTimeOffset.Now.ToUnixTimeSeconds();
+            req_data["method"]="execute";
+            req_data["params"]=parms;
+            string payload=JsonSerializer.Serialize(req_data);
+            var payload_bytes=Encoding.ASCII.GetBytes(payload);
+            var stream=req.GetRequestStream();
+            stream.Write(payload_bytes,0,payload_bytes.Length);
+            var resp=(HttpWebResponse)req.GetResponse();
+            var reader=new StreamReader(resp.GetResponseStream());
+            string result=reader.ReadToEnd();
+            var resp_data=JsonSerializer.Deserialize<Dictionary<string,object>>(result);
+            var error=resp_data["error"];
+            if (error!=null) {
+                throw new Exception("Error: "+error);
+            }
+            return resp_data["result"];
+        }
+
+        static void Main()
+        {
+            string[] cond={};
+            string[] fields={"first_name","last_name","email"};
+            object[] args={cond,fields};
+            var opts=new Dictionary<string,object>();
+            dynamic resp=rpc_execute("aln.client","search_read_path",args,opts);
+            Console.WriteLine(resp);
+        }
+    }
+}
 ```
 
 ### 3. Get cases for a specific client
@@ -227,6 +337,66 @@ curl --header "Content-Type: application/json" \
   https://staging-backend.tessaract.io/json_rpc
 ```
 
+Sample program (.NET):
+```console
+using System;
+using System.IO;
+using System.Net;
+using System.Text;
+using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
+namespace dotnet
+{
+    class Program
+    {
+        static string rpc_url="https://staging-backend.tessaract.io/json_rpc";
+        static string user_id="15914";
+        static string company_id="114";
+        static string token="dGVzc19zdGFnaW5nIDE1OTE0|1606649697|14025346adda420c834086ff09d4c27724d1f5b5";
+
+        static dynamic rpc_execute(string model, string method, object[] args, Dictionary<string,object> opts) {
+            var req=(HttpWebRequest)WebRequest.Create(rpc_url);
+            req.ContentType="application/json";
+            req.Method="POST";
+            var cookies=new Dictionary<string,object>();
+            cookies["user_id"]=user_id;
+            cookies["company_id"]=company_id;
+            cookies["token"]=token;
+            object[] parms={model,method,args,opts,cookies};
+            var req_data=new Dictionary<string,object>();
+            req_data["id"]=DateTimeOffset.Now.ToUnixTimeSeconds();
+            req_data["method"]="execute";
+            req_data["params"]=parms;
+            string payload=JsonSerializer.Serialize(req_data);
+            var payload_bytes=Encoding.ASCII.GetBytes(payload);
+            var stream=req.GetRequestStream();
+            stream.Write(payload_bytes,0,payload_bytes.Length);
+            var resp=(HttpWebResponse)req.GetResponse();
+            var reader=new StreamReader(resp.GetResponseStream());
+            string result=reader.ReadToEnd();
+            var resp_data=JsonSerializer.Deserialize<Dictionary<string,object>>(result);
+            var error=resp_data["error"];
+            if (error!=null) {
+                throw new Exception("Error: "+error);
+            }
+            return resp_data["result"];
+        }
+
+        static void Main()
+        {
+            string[] cond={"client_id","=","197258"};
+            string[] fields={"number","date","client_id.full_name","job_type_id.name","facts"};
+            object[] args={cond,fields};
+            var opts=new Dictionary<string,object>();
+            dynamic resp=rpc_execute("aln.job","search_read_path",args,opts);
+            Console.WriteLine(resp);
+        }
+    }
+}
+```
+
 ### 4. Get case details
 
 Sample request:
@@ -306,6 +476,66 @@ curl --header "Content-Type: application/json" \
   https://staging-backend.tessaract.io/json_rpc
 ```
 
+Sample program:
+```console
+using System;
+using System.IO;
+using System.Net;
+using System.Text;
+using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
+namespace dotnet
+{
+    class Program
+    {
+        static string rpc_url="https://staging-backend.tessaract.io/json_rpc";
+        static string user_id="15914";
+        static string company_id="114";
+        static string token="dGVzc19zdGFnaW5nIDE1OTE0|1606649697|14025346adda420c834086ff09d4c27724d1f5b5";
+
+        static dynamic rpc_execute(string model, string method, object[] args, Dictionary<string,object> opts) {
+            var req=(HttpWebRequest)WebRequest.Create(rpc_url);
+            req.ContentType="application/json";
+            req.Method="POST";
+            var cookies=new Dictionary<string,object>();
+            cookies["user_id"]=user_id;
+            cookies["company_id"]=company_id;
+            cookies["token"]=token;
+            object[] parms={model,method,args,opts,cookies};
+            var req_data=new Dictionary<string,object>();
+            req_data["id"]=DateTimeOffset.Now.ToUnixTimeSeconds();
+            req_data["method"]="execute";
+            req_data["params"]=parms;
+            string payload=JsonSerializer.Serialize(req_data);
+            var payload_bytes=Encoding.ASCII.GetBytes(payload);
+            var stream=req.GetRequestStream();
+            stream.Write(payload_bytes,0,payload_bytes.Length);
+            var resp=(HttpWebResponse)req.GetResponse();
+            var reader=new StreamReader(resp.GetResponseStream());
+            string result=reader.ReadToEnd();
+            var resp_data=JsonSerializer.Deserialize<Dictionary<string,object>>(result);
+            var error=resp_data["error"];
+            if (error!=null) {
+                throw new Exception("Error: "+error);
+            }
+            return resp_data["result"];
+        }
+
+        static void Main()
+        {
+            string[] ids={"262209"};
+            string[] fields={"number","date","client_id.full_name","job_type_id.name","facts","documents.title"};
+            object[] args={ids,fields};
+            var opts=new Dictionary<string,object>();
+            dynamic resp=rpc_execute("aln.job","read_path",args,opts);
+            Console.WriteLine(resp);
+        }
+    }
+}
+```
+
 ### 5. Create new case
 
 Sample request:
@@ -368,4 +598,66 @@ curl --header "Content-Type: application/json" \
       ]
   }' \
   https://staging-backend.tessaract.io/json_rpc
+```
+
+Sample program (.NET):
+```console
+using System;
+using System.IO;
+using System.Net;
+using System.Text;
+using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
+namespace dotnet
+{
+    class Program
+    {
+        static string rpc_url="https://staging-backend.tessaract.io/json_rpc";
+        static string user_id="15914";
+        static string company_id="114";
+        static string token="dGVzc19zdGFnaW5nIDE1OTE0|1606649697|14025346adda420c834086ff09d4c27724d1f5b5";
+
+        static dynamic rpc_execute(string model, string method, object[] args, Dictionary<string,object> opts) {
+            var req=(HttpWebRequest)WebRequest.Create(rpc_url);
+            req.ContentType="application/json";
+            req.Method="POST";
+            var cookies=new Dictionary<string,object>();
+            cookies["user_id"]=user_id;
+            cookies["company_id"]=company_id;
+            cookies["token"]=token;
+            object[] parms={model,method,args,opts,cookies};
+            var req_data=new Dictionary<string,object>();
+            req_data["id"]=DateTimeOffset.Now.ToUnixTimeSeconds();
+            req_data["method"]="execute";
+            req_data["params"]=parms;
+            string payload=JsonSerializer.Serialize(req_data);
+            var payload_bytes=Encoding.ASCII.GetBytes(payload);
+            var stream=req.GetRequestStream();
+            stream.Write(payload_bytes,0,payload_bytes.Length);
+            var resp=(HttpWebResponse)req.GetResponse();
+            var reader=new StreamReader(resp.GetResponseStream());
+            string result=reader.ReadToEnd();
+            var resp_data=JsonSerializer.Deserialize<Dictionary<string,object>>(result);
+            var error=resp_data["error"];
+            if (error!=null) {
+                throw new Exception("Error: "+error);
+            }
+            return resp_data["result"];
+        }
+
+        static void Main()
+        {
+            var vals=new Dictionary<string,object>();
+            vals["client_id"]="197257";
+            vals["job_type_id"]="2927";
+            vals["facts"]="This is a test case";
+            object[] args={vals};
+            var opts=new Dictionary<string,object>();
+            dynamic resp=rpc_execute("aln.job","create",args,opts);
+            Console.WriteLine(resp);
+        }
+    }
+}
 ```
