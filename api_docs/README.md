@@ -661,3 +661,38 @@ namespace dotnet
     }
 }
 ```
+
+### 6. Update existing cases
+
+Sample request:
+```json
+{
+  "id": 1603770625657,
+  "method": "execute",
+  "params": [
+      "aln.job",
+      "write",
+      [
+        [262211],
+        {
+            "facts": "This is an updated test case"
+        }
+      ],
+      {},
+      {
+        "user_id": 15914,
+        "company_id": 114,
+        "token": "dGVzc19zdGFnaW5nIDE1OTE0|1603776858|c2f5cc3b8697845fa8cebd4949f46d8e8ce9aab6"
+      }
+  ]
+}
+```
+
+Sample response:
+```json
+{
+    "error": null,
+    "id": 1603770625657,
+    "result": 262211
+}
+```
