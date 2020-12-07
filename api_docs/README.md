@@ -755,7 +755,7 @@ Sample request:
       "aln.job",
       "search_read_path",
       [
-        [[["number","like","0012"]],
+        [["number","like","0012"]],
         ["number"]
       ],
       {},
