@@ -696,3 +696,90 @@ Sample response:
     "result": 262211
 }
 ```
+
+### 7. Get case list with pagination
+
+Sample request:
+```json
+{
+  "id": 1603770625657,
+  "method": "execute",
+  "params": [
+      "aln.job",
+      "search_read_path",
+      [
+        [],
+        ["number"]
+      ],
+      {
+        "offset": 0,
+        "limit": 20,
+        "count": true
+      },
+      {
+        "user_id": 15914,
+        "company_id": 114,
+        "token": "dGVzc19zdGFnaW5nIDE1OTE0|1603776858|c2f5cc3b8697845fa8cebd4949f46d8e8ce9aab6"
+      }
+  ]
+}
+```
+
+Sample response:
+```json
+{
+    "error": null,
+    "id": 1603770625657,
+    "result": 
+    [
+        [
+            {
+                "number": "C-0012",
+                "id": 266787
+            },
+            ...
+        ],
+        1000
+    ]
+}
+```
+
+### 8. Search cases by number
+
+Sample request:
+```json
+{
+  "id": 1603770625657,
+  "method": "execute",
+  "params": [
+      "aln.job",
+      "search_read_path",
+      [
+        [[["number","like","0012"]],
+        ["number"]
+      ],
+      {},
+      {
+        "user_id": 15914,
+        "company_id": 114,
+        "token": "dGVzc19zdGFnaW5nIDE1OTE0|1603776858|c2f5cc3b8697845fa8cebd4949f46d8e8ce9aab6"
+      }
+  ]
+}
+```
+
+Sample response:
+```json
+{
+    "error": null,
+    "id": 1603770625657,
+    "result": 
+    [
+            {
+                "number": "C-0012",
+                "id": 266787
+            },
+            ...
+    ]
+}
+```
